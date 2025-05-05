@@ -32,6 +32,8 @@ import static com.tngtech.archunit.lang.conditions.ArchPredicates.are;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 import static com.tngtech.archunit.library.freeze.FreezingArchRule.freeze;
+import static com.tngtech.archunit.library.plantuml.rules.PlantUmlArchCondition.Configuration.consideringOnlyDependenciesInDiagram;
+import static com.tngtech.archunit.library.plantuml.rules.PlantUmlArchCondition.adhereToPlantUmlDiagram;
 import static de.rweisleder.archunit.spring.SpringAnnotationPredicates.springAnnotatedWith;
 import static de.rweisleder.archunit.spring.framework.SpringComponentPredicates.springController;
 
@@ -61,6 +63,14 @@ class ArchitectureTests {
 			classes()
 				.that().resideInAPackage("..vet..")
 				.should(not(dependOnClassesThat(resideInAPackage("..owner..")))));
+
+	@ArchTest
+	@SuppressWarnings("DataFlowIssue")
+	ArchRule PlantUmlDiagram = classes()
+		.should(adhereToPlantUmlDiagram(
+			getClass().getResource("/modules.puml"),
+			consideringOnlyDependenciesInDiagram())
+		);
 
 	@ArchTest
 	ArchRule Layers = Architectures.layeredArchitecture()
