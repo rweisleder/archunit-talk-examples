@@ -10,6 +10,7 @@ import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.CompositeArchRule;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.library.Architectures;
+import de.rweisleder.archunit.spring.framework.SpringControllerRules;
 import jakarta.persistence.Entity;
 import org.jmolecules.archunit.JMoleculesArchitectureRules;
 import org.slf4j.Logger;
@@ -109,4 +110,6 @@ class ArchitectureTests {
 		};
 	}
 
+	@ArchTest
+	ArchRule ArchUnitSpringRule = SpringControllerRules.ControllerNameWithoutRequestMapping;
 }
